@@ -1,11 +1,11 @@
-//web3 
-var Web3 = require('web3');
-var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
-
-
+// //web3 
+// var Web3 = require('web3');
+// var web3 = new Web3();
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
 //Abi
-var abi =  [
+
+
+abi = [
     {
       "constant": true,
       "inputs": [],
@@ -188,21 +188,16 @@ var abi =  [
     }
   ] ;
 //contract address
-var contractaddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10";
-// main test account1 address
-//var address = web3.eth.accounts[0];
-
-//get token property
-var tokenContract = web3.eth.contract(abi).at(contractaddress);
-var decimal = tokenContract.decimals();
-var balance = tokenContract.balanceOf(address);
-//var EthBalance = web3.eth.address;
-//var adjustedBalance = balance / Math.pow(10, decimal)
-var tokenName = tokenContract.name();
-var tokenSymbol = tokenContract.symbol();
-
+contractaddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10" ;
+// //get token property
+//var tokenContract = web3.eth.contract(abi).at(contractaddress);
+// var decimal = tokenContract.decimals();
+// var tokenBalance = tokenContract.balanceOf(address);
+// //var EthBalance = web3.eth.address;
+// //var adjustedBalance = balance / Math.pow(10, decimal)
+// var tokenName = tokenContract.name();
+// var tokenSymbol = tokenContract.symbol();
+exports.abi = abi;
+exports.contractaddress = contractaddress ;
 
 
-
-
-module.exports = {tokenContract , balance , tokenName , tokenSymbol};

@@ -1,19 +1,11 @@
-<!DOCTYPE html>
-
-<html>
-
-
-<head>
-  <meta charset="utf-8">
-
-  <!-- <script type="text/javascript" src="./lib/web3.js"></script> -->
-  <script type="text/javascript" src="./lib/web3.js"></script>
-  <script type="text/javascript" src="./lib/web3.min.js"></script>
-  <script type="text/javascript">
+// //web3 
+// var Web3 = require('web3');
+// var web3 = new Web3();
+// web3.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
+//Abi
 
 
-//var token =  require('./Token');
-var abi = [
+abi = [
     {
       "constant": true,
       "inputs": [],
@@ -195,81 +187,17 @@ var abi = [
       "type": "function"
     }
   ] ;
-var contractaddress = "0xfb88de099e13c3ed21f80a7a1e49f8caecf10df6" ;
-
-var Web3 = require('web3');
-var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
-
-var DemoToken = web3.eth.contract(abi).at(contractaddress);
-var accountOne = web3.eth.accounts[0];
-var accountTwo = web3.eth.accounts[1];
-
-//show address
-console.log(web3.eth.coinbase);
-
-//todo
-//check token balance 
-var accountOneBalance = DemoToken.getBalance.call(accountOne);
-console.log(accountOneBalance.toNumber());
+//contract address
+contractaddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10" ;
+// //get token property
+//var tokenContract = web3.eth.contract(abi).at(contractaddress);
+// var decimal = tokenContract.decimals();
+// var tokenBalance = tokenContract.balanceOf(address);
+// //var EthBalance = web3.eth.address;
+// //var adjustedBalance = balance / Math.pow(10, decimal)
+// var tokenName = tokenContract.name();
+// var tokenSymbol = tokenContract.symbol();
+exports.abi = abi;
+exports.contractaddress = contractaddress ;
 
 
-//check eth balance
-var EthBalance = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[0]),'ether');
-console.log(EthBalance.toNumber());
-
-
-//send token  
-//check txhash
-var txhashToken = DemoToken.transfer.sendTransaction(accountTwo, 150000, {from:accountOne});
-console.log(txhashToken);
-
-//send eth (withdraw)
-//check txhash
-var txhashEth = web3.eth.sendTransaction({from: accountOne, to:accountTwo, value: web3.toWei(1, 'ether'), gasLimit: 70000, gasPrice: 20000000000});
-console.log(txhashEth);
-
-
-//generate new address
-//var address = web3.eth.accounts.create();
-//  console.log(address);
-//web3.eth.personal.newAccount('!@superpassword');
-// .then(console.log);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</script>
-</head>
-
-
-<body>
-   <h1>ETH Wallet</h1>
-   
-   <h2>Main Address</h2>
-   <p></p>
-   <h2>ETH balance</h2>
-
-   <h2>Token balance</h2>
-
-
-</body>
-
-
-
-</html>
