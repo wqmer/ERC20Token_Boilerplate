@@ -1,14 +1,11 @@
-var myModule = require('./play');
-var token =  require('./Token');
-var abi = token.abi ;
-var contractaddress = token.contractaddress ;
+var Web3 = require('web3');
+var web3 = new Web3();
+web3.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
 
 
-var name = myModule.name ;
-var age = myModule.age ;
-console.log(age);
-console.log(name);
-console.log(abi);
+
+var address = web3.eth.accounts.create();
+console.log(address);
 
 
 
