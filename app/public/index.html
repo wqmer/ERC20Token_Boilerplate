@@ -200,56 +200,67 @@ var abi = [
       "type": "function"
     }
   ] ;
-var contractaddress = "0x345ca3e014aaf5dca488057592ee47305d9b3e10" ;
+var contractaddress = "0x0fe98c62c1f47687877335ce7879ac78bce262bd" ;
 var Web3 = require('web3');
 var web3 = new Web3();
-web3.setProvider(new web3.providers.HttpProvider('http://localhost:7545'));
+web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/1BPk9syIaAtEQzRuW9uF'));
 var DemoToken = web3.eth.contract(abi).at(contractaddress);
-var accountOne = web3.eth.accounts[0];
+var accountOne = "0x66eFf2F73d7E53F5D38Ca1249983af0E13B330fc";
 var accountTwo = web3.eth.accounts[1];
 //show address
-console.log(web3.eth.coinbase);
+//console.log(web3.eth.coinbase);
 
 
 //check token balance 
-var accountOneBalance = DemoToken.getBalance.call(accountOne);
-console.log(accountOneBalance.toNumber());
+//var accountOneBalance = DemoToken.getBalance.call(accountOne);
+//console.log(accountOneBalance.toNumber());
 
 //check eth balance
-var EthBalance = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[0]),'ether');
+var EthBalance = web3.fromWei(web3.eth.getBalance(accountOne),'ether');
 console.log(EthBalance.toNumber());
 
 //send token  
 //check txhash
 
-var txhashToken = DemoToken.transfer.sendTransaction(accountTwo, 150000, {from:accountOne});
-console.log(txhashToken);
+ var txhashToken = DemoToken.transfer.sendTransaction(accountTwo, 150000, {from:accountOne});
+ console.log(txhashToken);
 
 //send eth (withdraw)
 //check txhash
-
 var txhashEth = web3.eth.sendTransaction({from: accountOne, to:accountTwo, value: web3.toWei(1, 'ether'), gasLimit: 70000, gasPrice: 20000000000});
 console.log(txhashEth);
 
+//receipt 
+var receipt = web3.eth.getTransactionReceipt(txhashEth);
+console.log(receipt) ;
+
 
 // todo 
-// add 'create a new address' bottom to generate a new address , and get a copy of private key.
-// add 'withdraw' bottom to send coin/eth to a new address.
-// add 'balance' bottom to check balance.
-// add 'check ' botttom to check transaction 
+//genrerate new address 
+//configure 
 
 
- function watchBalance() {
-        var coinbase = web3.eth.coinbase;
-        var originalBalance = web3.eth.getBalance(coinbase).toNumber();
-        document.getElementById('coinbase').innerText = coinbase;
-        document.getElementById('original').innerText = ' original balance: ' + originalBalance ;
-        web3.eth.filter('latest').watch(function() {
-            var currentBalance = web3.eth.getBalance(coinbase).toNumber();
-            //document.getElementById("current").innerText = 'current: ' + currentBalance;
-            //document.getElementById("diff").innerText = 'diff:    ' + (currentBalance - originalBalance);
-        });
-    }
+//  function watchBalance() {
+//         var coinbase = web3.eth.coinbase;
+//         var originalBalance = web3.eth.getBalance(coinbase).toNumber();
+//         document.getElementById('coinbase').innerText = coinbase;
+//         document.getElementById('original').innerText = ' original balance: ' + originalBalance ;
+//         web3.eth.filter('latest').watch(function() {
+//             var currentBalance = web3.eth.getBalance(coinbase).toNumber();
+//             //document.getElementById("current").innerText = 'current: ' + currentBalance;
+//             //document.getElementById("diff").innerText = 'diff:    ' + (currentBalance - originalBalance);
+//         });
+//     }
+
+
+// <!-- 
+// function copyToClipboard(element) {
+//          var $temp = $("<input>");
+//          $("body").append($temp);
+//          $temp.val($(element).html()).select(); //Note the use of html() rather than text()
+//          document.execCommand("copy");
+//          $temp.remove();
+// } -->
 
 
 
@@ -264,28 +275,65 @@ console.log(txhashEth);
 
     <h1>ETH/ERC20 SIMPLE WALLET</h1>
    
-    <h2>list all address here</h2> 
-    <ol id="addresslist"  ></ol>
-    <!-- generate a new address and pop-up a private key  -->
+    <h2>List all address here</h2> 
+
     <button id = "newaddress">new address</button>
 
+    <dl id="addresslist"  >
+
+
+
+    </dl>
+
+    <!-- generate a new address and pop-up the private key  -->
+    
+
     <!-- input a address and onClick to check balance  -->
-    <h2>input a address here</h2>
-  
-    <button id="balance">balance</button>
-
-     <!-- input a new address , amount ,and type of coun . OnClick to send .Add a anohter bottom to check status-->
-    <h2>input the orginal address and destination address here</h2>
-    <button type="button" onClick="watchBalance();">withdraw</button>  <button type="button" onClick="watchBalance();">transaction status</button>
+    <h2>Input a address here</h2>
 
     
+    <div>  
+      <input id="address" type="text" size="50" >  
+      
+      <button id="balance">balance</button>   
+
+      <div id="showEthbalance"> </div> 
+      <div id="showTokenbalance"> </div> 
     
+    </div> 
    
-    <div id="current"></div>
-    <div id="diff"></div>
+   
+
+     <!-- input a new address , amount ,and type of coin . OnClick to send .-->
+    <h2>Withdraw</h2>
+
+    <div>  
+
+     Input amount here : <br>
+     <input id="amount" type="text"  size="10">  <br><br>
+     Input original and destination address here : <br>
+     <input id="original" type="text" size="50">  to  <input id="destination" type="text" size="50" >  <button id="withdraw" >withdraw</button> 
+     
+    </div> 
+    <br>
+   
+     
+     transaction history appear here :<br>
+    <ol id="txhistory"></ol>
+   
+    
+
+    <!-- Add a anohter bottom to check status -->
+    <h2>Input a txhash here to check </h2>
+    <input id="txhash" type="text" size="50" >
+    <button id="checkstatus" >transaction status</button>
+
+
+
+    <!-- <div id="diff"></div> -->
 
     <script src="./lib/jquery-3.3.1.min.js"></script>
-    <script src="./generate.js"></script>
+    <script src="./transcation.js"></script>
 
 </body>
 
