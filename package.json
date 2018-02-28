@@ -12,8 +12,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bip39": "^2.5.0",
     "eth-hd-wallet": "^0.3.0",
+    "eth-lightwallet": "^3.0.1",
+    "ethereumjs-wallet": "^0.6.0",
     "express": "^4.16.2",
+    "keythereum": "^1.0.2",
+    "node-keytool": "0.0.3",
     "nodemon": "^1.15.1",
     "path": "^0.12.7",
     "truffle-hdwallet-provider": "0.0.3",

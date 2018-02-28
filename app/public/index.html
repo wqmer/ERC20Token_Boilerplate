@@ -11,11 +11,15 @@
 
   <script type="text/javascript" src="./lib/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="./lib/web3.min0_2.js"></script>
+  <!-- <script type="text/javascript" src="./lib/lightwallet.min.js"></script> -->
+  <script type="text/javascript" src="./lib/bip39.min.js"></script>
+  <!-- <script type="text/javascript" src="./lib/ethereumjs-all-2018-1-17.js"></script> -->
+  <script type="text/javascript" src="./lib/hdkey.min.js"></script>
+  <!-- <script type="text/javascript" src="./lib/wallethd.js"></script> -->
+  <script type="text/javascript" src="./lib/ethereumjs-wallet-0.6.0.js"></script>
   <!-- <script type="text/javascript" src="./lib/web3.min.js"></script> -->
+  <script type="text/javascript" src="./lib/keythereum.min.js"></script>
   <script type="text/javascript">
-//var token =  require('./Token');
-
-
 
 
 var abi = [
@@ -200,44 +204,71 @@ var abi = [
       "type": "function"
     }
   ] ;
-var contractaddress = "0x0fe98c62c1f47687877335ce7879ac78bce262bd" ;
+
+
+
+
+// var contractaddress = "0x0fe98c62c1f47687877335ce7879ac78bce262bd" ;
+
+// var DemoToken = web3.eth.contract(abi).at(contractaddress);
+// var accountOne = "0x66eFf2F73d7E53F5D38Ca1249983af0E13B330fc";
+//var accountTwo = web3.eth.accounts[1];
+ 
+// var secretSeed = lightwallet.keystore.generateRandomSeed();
+// var address = keystore.generateNewAddress(pwDerivedKey, [num]);
+// var seed_one = "spot plunge retire helmet skin notice furnace obtain hour cousin oxygen post";
+// var mnemonic = seed_one ;
+// var hdwallet = hdkey.fromMasterSeed(bip39.mnemonicToSeed(mnemonic));
+// var wallet_hdpath = "m/44'/60'/0'/0/";
+// var wallets = {};
+// var addresses = [];
+// var num_addresses = 5 ;
+// var address_index = 0 ;
+// console.log(hdwallet.derive(wallet_hdpath));
+
+
+// generate new addres by mnemonic
+    //  for (let i = address_index ; i < address_index  + num_addresses ; i++){
+    //   var wallet = hdwallet.derive(wallet_hdpath + i).getWallet();
+    //   var addr = '0x' + wallet.getAddress().toString('hex');
+    //   addresses.push(addr);
+    //   wallets[addr] = wallet;
+    // }
+
 var Web3 = require('web3');
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/1BPk9syIaAtEQzRuW9uF'));
-var DemoToken = web3.eth.contract(abi).at(contractaddress);
-var accountOne = "0x66eFf2F73d7E53F5D38Ca1249983af0E13B330fc";
-var accountTwo = web3.eth.accounts[1];
-//show address
-//console.log(web3.eth.coinbase);
 
+
+
+// var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
+// // generate five new address/private key pairs
+// // the corresponding private keys are also encrypted
+// ks.generateNewAddress(pwDerivedKey, 5);
 
 //check token balance 
 //var accountOneBalance = DemoToken.getBalance.call(accountOne);
 //console.log(accountOneBalance.toNumber());
 
-//check eth balance
-var EthBalance = web3.fromWei(web3.eth.getBalance(accountOne),'ether');
-console.log(EthBalance.toNumber());
+// //check eth balance
+// var EthBalance = web3.fromWei(web3.eth.getBalance(accountOne),'ether');
+// console.log(EthBalance.toNumber());
 
 //send token  
 //check txhash
 
- var txhashToken = DemoToken.transfer.sendTransaction(accountTwo, 150000, {from:accountOne});
- console.log(txhashToken);
+//  var txhashToken = DemoToken.transfer.sendTransaction(accountTwo, 150000, {from:accountOne});
+//  console.log(txhashToken);
 
 //send eth (withdraw)
-//check txhash
-var txhashEth = web3.eth.sendTransaction({from: accountOne, to:accountTwo, value: web3.toWei(1, 'ether'), gasLimit: 70000, gasPrice: 20000000000});
-console.log(txhashEth);
+// //check txhash
+// var txhashEth = web3.eth.sendTransaction({from: accountOne, to:accountTwo, value: web3.toWei(1, 'ether'), gasLimit: 70000, gasPrice: 20000000000});
+// console.log(txhashEth);
 
 //receipt 
-var receipt = web3.eth.getTransactionReceipt(txhashEth);
-console.log(receipt) ;
+// var receipt = web3.eth.getTransactionReceipt(txhashEth);
+// console.log(receipt) ;
 
-
-// todo 
-//genrerate new address 
-//configure 
 
 
 //  function watchBalance() {
@@ -265,26 +296,44 @@ console.log(receipt) ;
 
 
 
+
+
+//to do 
+//save keystore .
+//hook with contract 
+//bug free , password viladate  ,balance viladate , address format viladate.
+//error processing 
+//copy to clipboard 
+//restore a wallet wtih seed .Create a wallet with seed.
+
 </script>
 
-
 </head>
-
 
 <body>
 
     <h1>ETH/ERC20 SIMPLE WALLET</h1>
+    <br>
+    
+
    
-    <h2>List all address here</h2> 
-
-    <button id = "newaddress">new address</button>
-
+    <h2>Wallet</h2> 
+     Restore your wallet:
+      
+     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="file" id="importkey" name="upload your key" /> 
+    <br> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  
+    <button id = "unlock" >Unlock wallet </button>
+    <br>
+    <br>
+     Create a new wallet: &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <button id = "newWallet" >Create a wallet </button> 
+    <!-- <br> add new address : &nbsp &nbsp &nbsp &nbsp <button id = "new address" >Add address </button>   -->
+    <br>
+    <br>
+    You address here:
     <dl id="addresslist"  >
-
-
-
+       
     </dl>
-
+    
     <!-- generate a new address and pop-up the private key  -->
     
 
@@ -298,6 +347,7 @@ console.log(receipt) ;
       <button id="balance">balance</button>   
 
       <div id="showEthbalance"> </div> 
+
       <div id="showTokenbalance"> </div> 
     
     </div> 
@@ -309,7 +359,7 @@ console.log(receipt) ;
 
     <div>  
 
-     Input amount here : <br>
+     Amount : <br>
      <input id="amount" type="text"  size="10">  <br><br>
      Input original and destination address here : <br>
      <input id="original" type="text" size="50">  to  <input id="destination" type="text" size="50" >  <button id="withdraw" >withdraw</button> 
@@ -324,16 +374,23 @@ console.log(receipt) ;
     
 
     <!-- Add a anohter bottom to check status -->
-    <h2>Input a txhash here to check </h2>
+    <h2>Input a txhash to check </h2>
     <input id="txhash" type="text" size="50" >
     <button id="checkstatus" >transaction status</button>
+
+    <!-- <button onclick="loadFileAsText()">Load Selected File</button>
+     -->
 
 
 
     <!-- <div id="diff"></div> -->
 
     <script src="./lib/jquery-3.3.1.min.js"></script>
-    <script src="./transcation.js"></script>
+    <script src="./wallet.js"></script>
+
+
+
+
 
 </body>
 
