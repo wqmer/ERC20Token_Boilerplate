@@ -5,21 +5,31 @@
 
 
 <head>
+    <style>
+        ol {
+            display: block;
+            list-style-type: decimal;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: 0;
+        }
+        </style>
 
   <meta charset="utf-8">
 
 
   <script type="text/javascript" src="./lib/jquery-3.3.1.min.js"></script>
   <script type="text/javascript" src="./lib/web3.min0_2.js"></script>
-  <!-- <script type="text/javascript" src="./lib/lightwallet.min.js"></script> -->
+  <script type="text/javascript" src="./lib/FileSaver.min.js"></script>
   <script type="text/javascript" src="./lib/bip39.min.js"></script>
-  <!-- <script type="text/javascript" src="./lib/ethereumjs-all-2018-1-17.js"></script> -->
+  <script type="text/javascript" src="./lib/ethereumjs-all-2018-1-17.js"></script>
   <script type="text/javascript" src="./lib/hdkey.min.js"></script>
-  <!-- <script type="text/javascript" src="./lib/wallethd.js"></script> -->
-  <script type="text/javascript" src="./lib/ethereumjs-wallet-0.6.0.js"></script>
-  <!-- <script type="text/javascript" src="./lib/web3.min.js"></script> -->
   <script type="text/javascript" src="./lib/keythereum.min.js"></script>
-  <script type="text/javascript">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+  <script type="text/javascript" language="javascript" >
 
 
 var abi = [
@@ -237,10 +247,12 @@ var abi = [
 
 var Web3 = require('web3');
 var web3 = new Web3();
+//web3.setProvider(new web3.providers.HttpProvider('https://mainnet.infura.io/1BPk9syIaAtEQzRuW9uF'));
 web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/1BPk9syIaAtEQzRuW9uF'));
 
 
-
+// var blob = new Blob(["欢迎访问 hangge.com"], {type: "text/plain;charset=utf-8"});
+// saveAs(blob, "文件.txt");
 // var ks = new lightwallet.keystore(secretSeed, pwDerivedKey);
 // // generate five new address/private key pairs
 // // the corresponding private keys are also encrypted
@@ -284,116 +296,175 @@ web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/1BPk
 //     }
 
 
-// <!-- 
+
 // function copyToClipboard(element) {
 //          var $temp = $("<input>");
 //          $("body").append($temp);
 //          $temp.val($(element).html()).select(); //Note the use of html() rather than text()
 //          document.execCommand("copy");
-//          $temp.remove();
-// } -->
+//          $temp.remove(); 
+
+         
+
+        //   var outfile, outpath, json;
+        //   var pathname= "./";
+        //   var outpath = "./";
+        //   outfile = keythereum.generateKeystoreFilename(keyObject.address);
+        //  // outpath = path.join(pathname, outfile);
+        //   json = JSON.stringify(keyObject);
+        //   fs.writeFile(outpath, json) ;     
 
 
 
-
-
-
-//to do 
-//save keystore .
+  
+//   id: "e13b209c-3b2f-4327-bab0-3bef2e51630d",
+//   version: 3
+// }
+// keythereum.exportToFile(keyObject);
 //hook with contract 
 //bug free , password viladate  ,balance viladate , address format viladate.
 //error processing 
 //copy to clipboard 
 //restore a wallet wtih seed .Create a wallet with seed.
 
+
+
+// <!-- 
+// var gaslimit = 21000 ;//deafult
+// //var privateKey = '350d47e3dfc4e10db99a919d0e066d9f5b6f7e598f7d46a1b8aed3ab987737a2';
+// var privateKey = new Buffer('350d47e3dfc4e10db99a919d0e066d9f5b6f7e598f7d46a1b8aed3ab987737a2', 'hex');
+// var nonce = web3.eth.getTransactionCount('0x680A48f49015dC5221E6b0bfdE6B9c2154db928E');
+
+// var value = 500000000000000 ;
+// var rawTx = {
+//     nonce: nonce,
+//     gasPrice: '0x09184e72a000', 
+//     gasLimit: gaslimit,
+//     to: '0x66eFf2F73d7E53F5D38Ca1249983af0E13B330fc', 
+//     value: value 
+//   //data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
+// }
+// var tx = new ethereumjs.Tx(rawTx);
+// tx.sign(privateKey);
+// var serializedTx = tx.serialize();
+// var hashtx = web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex'));
+// console.log(hashtx); 
+// <!-- 
+// var result = web3.eth.estimateGas({
+//     to: "0xc4abd0339eb8d57087278718986382264244252f", 
+//     data: "0xc6888fa10000000000000000000000000000000000000000000000000000000000000003"
+// });
+
+// var hexamount = web3.toHex(0.12) ;
+// console.log(hexamount); -->
+//var al= jQuery('#hashlist a');
+
+   
+    
+    //link.herf = "http://the.new.url" ;
+    //var link = jQuery('#link')
+
+
+
+
 </script>
 
 </head>
 
 <body>
-
-    <h1>ETH/ERC20 SIMPLE WALLET</h1>
-    <br>
     
+  
 
-   
+    <h1>ETHEREUM WALLET</h1>
+    <br>
+  
     <h2>Wallet</h2> 
      Restore your wallet:
+     <br>
       
-     &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <input type="file" id="importkey" name="upload your key" /> 
-    <br> &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp  
-    <button id = "unlock" >Unlock wallet </button>
+    <input type="file" id="importkey" name="upload your key" /> 
+    &nbsp &nbsp &nbsp &nbsp &nbsp 
+    <button id = "unlock" >Restore a wallet </button>
     <br>
     <br>
-     Create a new wallet: &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp <button id = "newWallet" >Create a wallet </button> 
+     Create a new wallet: &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp
+     &nbsp  <button id = "newWallet" >Create a wallet </button>
     <!-- <br> add new address : &nbsp &nbsp &nbsp &nbsp <button id = "new address" >Add address </button>   -->
     <br>
     <br>
+    <br>
     You address here:
-    <dl id="addresslist"  >
+    <br>
+    <div id="addresslist"  >
+      <span></span> 
+    </div>
+
+    <br> 
+    Balance :
+    <div id="balancelist"  >
+      <span></span> 
+    </div>
        
-    </dl>
+
     
     <!-- generate a new address and pop-up the private key  -->
     
 
     <!-- input a address and onClick to check balance  -->
-    <h2>Input a address here</h2>
-
+  
     
-    <div>  
-      <input id="address" type="text" size="50" >  
-      
-      <button id="balance">balance</button>   
+    <!-- <div>  
+
 
       <div id="showEthbalance"> </div> 
 
       <div id="showTokenbalance"> </div> 
     
-    </div> 
+    </div>  -->
    
    
 
      <!-- input a new address , amount ,and type of coin . OnClick to send .-->
-    <h2>Withdraw</h2>
+    <h2>Send Eth</h2>
 
     <div>  
 
-     Amount : <br>
-     <input id="amount" type="text"  size="10">  <br><br>
-     Input original and destination address here : <br>
-     <input id="original" type="text" size="50">  to  <input id="destination" type="text" size="50" >  <button id="withdraw" >withdraw</button> 
+         &nbsp Amount&nbsp &nbsp  &nbsp &nbsp &nbsp &nbsp &nbsp  Input destination address here <br> 
+         <input id="amount" type="text"  size="10">  
+         <input id="destination" type="text" size="50" >  <br><br> 
+         <button id="withdraw" >withdraw</button> 
      
     </div> 
+
     <br>
    
      
-     transaction history appear here :<br>
-    <ol id="txhistory"></ol>
+    <h2>Transaction hash </h2>
+
+     <div id ="hashlist"  style="text-align:left"  >
+     <ol  id = "ol"  ></ol> 
+     <!-- <ol  id = "testol" ></ol>  -->
+     <!-- <a id ="link" ></a> -->
+     </div> 
+
+ 
    
     
+  
 
-    <!-- Add a anohter bottom to check status -->
-    <h2>Input a txhash to check </h2>
-    <input id="txhash" type="text" size="50" >
-    <button id="checkstatus" >transaction status</button>
+ 
 
-    <!-- <button onclick="loadFileAsText()">Load Selected File</button>
-     -->
-
-
-
-    <!-- <div id="diff"></div> -->
+     
+    
 
     <script src="./lib/jquery-3.3.1.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
     <script src="./wallet.js"></script>
 
 
-
+  
 
 
 </body>
-
-
 
 </html>

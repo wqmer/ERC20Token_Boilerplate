@@ -1,11 +1,22 @@
 
+
+var goalbalkey ;
+
+var goalbalAddress;
+
+
+
+
+
+
 var unlock = jQuery ('#unlock');
       
     unlock.on('click',  function (){
 
+     
       var fileToLoad = document.getElementById("importkey").files[0];
 
-      var password = prompt("Input a password to recover your wallet :" , "");
+      var password = prompt("Input a password to recover your wallet :" , "");  
 
         var fileReader = new FileReader();
 
@@ -13,35 +24,41 @@ var unlock = jQuery ('#unlock');
 
                var keyobject = JSON.parse(fileReader.result);
 
-               //console.log(JSON.parse(fileReader.result));
+               goalbalkey  = keythereum.recover(password, keyobject) ;//goalbal 
 
                var privateKey = keythereum.recover(password, keyobject) ;
-               
-               
-               var wallet = new ethereumjs.Wallet(privateKey); 
+    
+               var wallet = new ethereumjs.Wallet(privateKey);
 
                var readablePkey = wallet.getPrivateKeyString();
 
-               //var wallet =  ethereumjs.fromV3(keyobject,password);
+               var address = wallet.getAddressString();
+
+               goalbalAddress = wallet.getAddressString();
+
+               var readablePkey = wallet.getPrivateKeyString();
+
+             //var wallet =  ethereumjs.fromV3(keyobject,password);
 
                var address = wallet.getAddressString();
 
                alert(
                    "Your wallet recovered ! Please copy and store your privatekey :"  
                + readablePkey + "\r" +
-                    "And your address is : " + "\r" + address) ;
+                   "And your address is : " + "\r" + address) ;
       
-               var Li = jQuery('<li></li>');
+                var al= jQuery('#addresslist span');
 
-               Li.text(address);
+                al.text(address);
 
-               jQuery('#addresslist').append(Li)       
+                var bl = jQuery('#balancelist span');
 
+                bl.text(web3.fromWei(web3.eth.getBalance(address),'ether') + " " + "ETH")
         }; 
-               fileReader.readAsText(fileToLoad);
+                
+                fileReader.readAsText(fileToLoad);
 
-            
-              //var wallet.fromV3(input, password1);
+                //var wallet.fromV3(input, password1);
 });
 
 
@@ -83,20 +100,60 @@ var sendTransaction = jQuery ('#withdraw');
 
     sendTransaction.on('click', function () {
 
-        var original = jQuery ("#original").val();
-
             var destination = jQuery ("#destination").val();
 
             var amount = jQuery ("#amount").val();
 
-            var txhashEth = web3.eth.sendTransaction({from: original, to: destination, value: web3.toWei(amount, 'ether'), gasLimit: 70000, gasPrice: 20000000000});
+            var value = web3.toWei(amount, 'ether');
 
-            //generate txhash
-            var Li = jQuery('<li></li>');
+            var number = web3.fromDecimal(value);
 
-            Li.text(txhashEth);
+          //  console.log(amount);
+          //  var hexamount = web3.toHex(amount) ;
 
-            jQuery('#txhistory').append(Li)
+
+
+            var gaslimit = 210000 ;//deafult
+
+            var nonce = web3.eth.getTransactionCount(goalbalAddress)  ;
+
+            console.log(nonce);
+
+            var rawTx = {
+                nonce: nonce,
+                gasPrice:  '0x09184e', 
+                gasLimit: gaslimit,
+                to: destination , 
+                value: number
+                //data: '0x7f7465737432000000000000000000000000000000000000000000000000000000600057'
+            }
+
+            var tx = new ethereumjs.Tx(rawTx);
+
+            tx.sign(goalbalkey);
+
+            var serializedTx = tx.serialize();
+
+            //console.log(serializedTx);
+            
+             var hash = web3.eth.sendRawTransaction('0x' + serializedTx.toString('hex')) ;
+            
+             console.log(hash); 
+
+              alert("Please click on the hash to check your transcation status") ;
+
+            // var al= jQuery('#hashlist ol');
+
+            // al.text(hash);
+
+
+            var al= jQuery('<a>'+hash+'</a>');
+
+                al.attr("href" , "https://etherscan.io/tx/"+ hash);
+                
+                al.attr("target" , "_blank") ;
+
+            jQuery('#ol').append(al)
 
 
     });
@@ -121,34 +178,112 @@ var checkTx = jQuery('#checkstatus');
 
 
 
-
-
-
+//to do 
+//bug free
+//error processing .
 var newWallet = jQuery('#newWallet');
-    newWallet.on('click', function(){
+
+      newWallet.on('click', function(){
 
          var password = prompt("Input a password :" , "");
-      // var password = "198811532" ;
-        
+
          var params = { keyBytes: 32, ivBytes: 16 };
+
          var dk = keythereum.create(params);
+
          var keyObject = keythereum.dump(password, dk.privateKey, dk.salt, dk.iv);
+
          var privateKey = keythereum.recover(password, keyObject) ;
+
          var wallet = new ethereumjs.Wallet(privateKey);
+
          var address = wallet.getAddressString();
 
-         var Li = jQuery('<li></li>');
+         var json = JSON.stringify(keyObject);
+
+         var filename = keythereum.generateKeystoreFilename(address);
+
+
+         var blob = new Blob([json], {type: "text/plain;charset=utf-8"});
+
+          saveAs(blob, filename);
+
+           //keythereum.exportToFile(keyObject);
+         
+
+         alert("Please Notice your keystone file wii be genreated in download folder . And Make sure only you can access it !");
+         
+
+
+         var Li = jQuery('#addresslist span');
+
          Li.text(address);
-         jQuery('#addresslist').append(Li) 
+
+         var bl = jQuery('#balancelist span');
+
+         bl.text(web3.fromWei(web3.eth.getBalance(address),'ether') + " " + "ETH")
+
+
+        //  var Li = jQuery('<li></li>');
+
+        //  Li.text(address);
+
+        //  jQuery('#addresslist').append(Li) 
 
 
          //console.log(keyObject.address);
          //save kestore file
     });
+ 
+
+// var download = jQuery('#download');
+
+//     download.on('click', function(){
+
+//     alert("Your keystone file genreate in this folder : ");
+
+//     var Li = jQuery('<li></li>');
+
+//     Li.text(address);
+
+//     jQuery('#addresslist').append(Li) 
+
+
+//     //console.log(keyObject.address);
+//     //save kestore file
+// });
+
+// var test1 = jQuery('#test1');
+
+//     test1.on('click', function() {
+
+//          pkey = "456"  ;
+
+//     });
+
+
+// var hash = "link" ;
+// var al= jQuery('<a>'+hash+'</a>');
+// al.attr("href" , "https://etherscan.io/tx/0x6b40fd4490e07ff75dc4baedcbdebf0fdf6b8467813569421503e074a684ce42");
+// al.attr("target" , "_blank") ;
+// jQuery('#testol').append(al)
 
 
 
+ 
 
-    
-      ///console.log(keyObject);
-      //keythereum.exportToFile(keyObject);
+// var test = jQuery('#test');
+
+//     test.on('click', function() {
+  
+
+//      var link = jQuery('#link').attr("href", "http://www.amazon.com/");
+ 
+
+//     });
+     
+
+            
+        
+
+   

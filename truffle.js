@@ -1,6 +1,6 @@
 var HDWalletProvider = require('truffle-hdwallet-provider');
 var mnemonic = "spot plunge retire helmet skin notice furnace obtain hour cousin oxygen post";
-
+var mn = "mother ride early ignore more festival nest lecture subway forum good company" ;
 
 module.exports = {
   networks: {
@@ -11,12 +11,29 @@ module.exports = {
   },
   ropsten: {
     provider: function() {
-       return new HDWalletProvider(mnemonic, "https://ropsten.infura.io/1BPk9syIaAtEQzRuW9uF")
+       return new HDWalletProvider(mn, "https://ropsten.infura.io/1BPk9syIaAtEQzRuW9uF")
     },
    network_id: 3 ,
    gas : 2000000,
    gasPrice : 1000000000
-  }   
+  } ,
 
-}
+  // live : {
+  //   network_id: 1,
+  //   host: "127.0.0.1",
+  //   port: 8546   
+  // } ,
+
+  live : {
+    provider: function() {
+       return new HDWalletProvider(mn, "https://mainnet.infura.io/1BPk9syIaAtEQzRuW9uF")
+    },
+   network_id: 3 ,
+   gas : 2000000,
+   gasPrice : 1000000000
+  } ,
+
+
+ }
+ 
 };
